@@ -31,11 +31,27 @@ const postSchema = new Schema(
       default: 0,
       min: [0, "Comments count cannot be negative"],
     },
+    reportsCount: {
+      type: Number,
+      default: 0,
+      min: [0, "Reports count cannot be negative"],
+    },
+    hiddenBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    hiddenReason: {
+      type: String,
+      default: null,
+      trim: true,
+      maxlength: [500, "Hidden reason cannot exceed 500 characters"],
+    },
     status: {
       type: String,
       enum: {
         values: Object.values(CONTENT_STATUS),
-        message: "Status must be either active or deleted",
+        message: "Status must be active, hidden or deleted",
       },
       default: CONTENT_STATUS.ACTIVE,
       index: true,

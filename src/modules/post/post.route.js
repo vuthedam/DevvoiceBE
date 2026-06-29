@@ -1,24 +1,36 @@
 import { Router } from "express";
 import validBodyRequest from "../../common/utils/validBodyRequest.js";
+import verifyToken from "../../common/middlewares/verifyToken.js";
+import isAdmin from "../../common/middlewares/isAdmin.js";
+import isActiveUser from "../../common/middlewares/isActiveUser.js";
+import { createPostSchema, updatePostSchema } from "./post.schema.js";
 import {
   createPost,
-  deletePost,
+  getActivePosts,
+  getAllPosts,
   getPostDetail,
-  getPosts,
-  restorePost,
-  softDeletePost,
   updatePost,
+  softDeletePost,
+  hidePost,
+  restorePost,
+  deletePost,
 } from "./post.controller.js";
-import { createPostSchema, updatePostSchema } from "./post.schema.js";
 
 const postRouter = Router();
 
-postRouter.post("/", validBodyRequest(createPostSchema), createPost);
-postRouter.get("/", getPosts);
+// Public
+postRouter.get("/", getActivePosts);
 postRouter.get("/:id", getPostDetail);
-postRouter.patch("/:id", validBodyRequest(updatePostSchema), updatePost);
-postRouter.delete("/:id", deletePost);
-postRouter.delete("/soft-delete/:id", softDeletePost);
-postRouter.patch("/restore/:id", restorePost);
+
+// User
+postRouter.post("/", verifyToken, isActiveUser, validBodyRequest(createPostSchema), createPost);
+postRouter.patch("/:id", verifyToken, isActiveUser, validBodyRequest(updatePostSchema), updatePost);
+postRouter.delete("/soft-delete/:id", verifyToken, isActiveUser, softDeletePost);
+
+// Admin
+postRouter.get("/admin/all", verifyToken, isAdmin, getAllPosts);
+postRouter.patch("/admin/:id/hide", verifyToken, isAdmin, hidePost);
+postRouter.patch("/admin/:id/restore", verifyToken, isAdmin, restorePost);
+postRouter.delete("/admin/:id", verifyToken, isAdmin, deletePost);
 
 export default postRouter;

@@ -6,6 +6,7 @@ import postRouter from "../modules/post/post.route.js";
 import commentRouter from "../modules/comment/comment.route.js";
 import postReactionRouter from "../modules/post-reaction/post-reaction.route.js";
 import commentReactionRouter from "../modules/comment-reaction/comment-reaction.route.js";
+import reportRouter from "../modules/report/report.route.js";
 
 const router = Router();
 
@@ -16,5 +17,9 @@ router.use("/posts", postRouter);
 router.use("/comments", commentRouter);
 router.use("/post-reactions", postReactionRouter);
 router.use("/comment-reactions", commentReactionRouter);
+// User: POST /reports/post/:postId, POST /reports/comment/:commentId
+router.use("/reports", reportRouter);
+// Admin: GET /admin/reports, GET /admin/reports/:id, PATCH /admin/reports/:id/resolve...
+router.use("/admin/reports", reportRouter);
 
 export default router;

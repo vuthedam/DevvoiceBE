@@ -10,7 +10,22 @@ export const USER_STATUS = {
 
 export const CONTENT_STATUS = {
   ACTIVE: "active",
+  HIDDEN: "hidden",
   DELETED: "deleted",
+};
+
+export const REPORT_STATUS = {
+  PENDING: "pending",
+  RESOLVED: "resolved",
+  REJECTED: "rejected",
+};
+
+export const REPORT_REASON = {
+  SPAM: "spam",
+  HARASSMENT: "harassment",
+  HATE_SPEECH: "hate_speech",
+  MISINFORMATION: "misinformation",
+  OTHER: "other",
 };
 
 export const POST_REACTION_TYPE = {
