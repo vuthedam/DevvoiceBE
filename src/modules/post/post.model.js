@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { CONTENT_STATUS } from "../../common/constants/enums.js";
+import { POST_STATUS } from "../../common/constants/enums.js";
 
 const postSchema = new Schema(
   {
@@ -36,6 +36,30 @@ const postSchema = new Schema(
       default: 0,
       min: [0, "Reports count cannot be negative"],
     },
+    status: {
+      type: String,
+      enum: {
+        values: Object.values(POST_STATUS),
+        message: "Invalid status",
+      },
+      default: POST_STATUS.PENDING,
+      index: true,
+    },
+    approvedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    approvedAt: {
+      type: Date,
+      default: null,
+    },
+    rejectReason: {
+      type: String,
+      default: null,
+      trim: true,
+      maxlength: [1000, "Reject reason cannot exceed 1000 characters"],
+    },
     hiddenBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -46,15 +70,6 @@ const postSchema = new Schema(
       default: null,
       trim: true,
       maxlength: [500, "Hidden reason cannot exceed 500 characters"],
-    },
-    status: {
-      type: String,
-      enum: {
-        values: Object.values(CONTENT_STATUS),
-        message: "Status must be active, hidden or deleted",
-      },
-      default: CONTENT_STATUS.ACTIVE,
-      index: true,
     },
   },
   {

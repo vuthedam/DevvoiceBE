@@ -14,6 +14,14 @@ export const CONTENT_STATUS = {
   DELETED: "deleted",
 };
 
+export const POST_STATUS = {
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+  HIDDEN: "hidden",
+  DELETED: "deleted",
+};
+
 export const REPORT_STATUS = {
   PENDING: "pending",
   RESOLVED: "resolved",
